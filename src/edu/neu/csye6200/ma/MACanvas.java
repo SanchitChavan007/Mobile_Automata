@@ -39,6 +39,8 @@ public class MACanvas extends JPanel implements Observer {
     private final static String bb = "RuleB";
     private final static String cc = "RuleC";
     public static String currRule = aa;
+    private static int simulationSteps;
+    private static int stepCount = 0;
     
 	Dimension size = getSize();
 	int maxRows = size.height / stepSize;
@@ -58,8 +60,8 @@ public class MACanvas extends JPanel implements Observer {
 		//set.add(60);
 		//set.add(70);
 
-		set.add(100);
-		//set.add(80);
+		set.add(50);
+		set.add(80);
 		//set.add(82);
 		maf = new MAFrame(set);	
 	}
@@ -106,9 +108,14 @@ public class MACanvas extends JPanel implements Observer {
 	}
 	
 	//called from UI action performed
-	 void start() {	
+	 void start(int simulationSteps) {	
+		 if(stepCount < simulationSteps) {
 		  applyRule(maf);
 		  repaint();
+		  stepCount++;
+		  System.out.println(stepCount);
+		 }
+		  
 	}
 	
 

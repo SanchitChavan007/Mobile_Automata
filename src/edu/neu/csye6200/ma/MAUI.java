@@ -22,10 +22,10 @@ public class MAUI extends MAApp {
 	protected JButton stopBtn = null;
 	protected JComboBox<List> ruleComboBox = null;
 	protected JButton setTime = null;
-	protected JTextField timeInputField = null;
+	protected JTextField timeInputField;
     private static MACanvas maPanel = null;
     private static String selectedRule = "RuleA";
-    private String simulationTime = "1";
+    private int simulationSteps;
     private Timer timer;
 
 	public MAUI() {
@@ -33,7 +33,7 @@ public class MAUI extends MAApp {
 		frame.setSize(500, 400);
 		frame.setTitle("MA Simulation App");	
     	showUI(); // Cause the Swing Dispatch thread to display the JFrame
-		timer = new Timer(100, this);
+		timer = new Timer(500, this);
 		timer.setRepeats(true);
 	}
 	
@@ -42,15 +42,16 @@ public class MAUI extends MAApp {
 	public void actionPerformed(ActionEvent ae) {
 		log.info("We received an ActionEvent " + ae);
 		timer.start();
-		maPanel.start();
+		maPanel.start(simulationSteps);
 		if (ae.getActionCommand() == "Start") {
 			System.out.println("Start pressed");
-		
+			simulationSteps = Integer.parseInt(timeInputField.getText());
 			
 		}
-		else if (ae.getSource() == stopBtn)
+		else if (ae.getActionCommand() == "Stop") {
 			System.out.println("Stop pressed");
-		
+			simulationSteps = 0;
+		}
 		//Selecting Rule from ComboBox
 		else if((ae.getActionCommand() == "comboBoxChanged")) {
 		JComboBox cb = (JComboBox)ae.getSource();
@@ -58,8 +59,8 @@ public class MAUI extends MAApp {
 		maPanel.currRule = selectedRule;
 		}		
 		
-		else if(ae.getSource() == setTime) {
-			simulationTime = timeInputField.getText();
+		else if(ae.getActionCommand() == "Set Time") {
+			simulationSteps = Integer.parseInt(timeInputField.getText());
 		}
 	}
 	
@@ -104,6 +105,7 @@ public class MAUI extends MAApp {
 		    	ruleComboBox.setSelectedIndex(0);
 		    	ruleComboBox.addActionListener(this);
 		    	setTime = new JButton("Set Time");
+		    	setTime.addActionListener(this);
 		    	timeInputField = new JTextField("Input Time");
 		    	
 		    	northPanel.add(ruleComboBox);
