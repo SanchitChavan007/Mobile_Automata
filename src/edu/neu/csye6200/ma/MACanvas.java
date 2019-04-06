@@ -1,5 +1,7 @@
 package edu.neu.csye6200.ma;
 
+
+import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
 import java.awt.BorderLayout;
@@ -9,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 
 /**
@@ -28,7 +31,15 @@ public class MACanvas extends JPanel implements Observer {
     private int n = 10;
     private int c = 0;
     private MARuleA ruleA = null;
+    private MARuleB ruleB = null;
+    private MARuleC ruleC = null;
     private boolean firstTime = true;
+    private HashSet<Integer> set = null;
+    private final static String aa = "RuleA";
+    private final static String bb = "RuleB";
+    private final static String cc = "RuleC";
+    public static String currRule = aa;
+    
 	Dimension size = getSize();
 	int maxRows = size.height / stepSize;
 	int maxCols = size.width / stepSize;
@@ -37,8 +48,20 @@ public class MACanvas extends JPanel implements Observer {
      */
 	public MACanvas() {
 		col = Color.gray;
-		
-		// Create 2d Array
+		set = new HashSet<>();
+		//add active cells here------------------>>>>>>>>
+		//set.add(30);
+//		set.add(10);
+		//set.add(40);
+		//set.add(42);
+	//	set.add(44);
+		//set.add(60);
+		//set.add(70);
+
+		set.add(100);
+		//set.add(80);
+		//set.add(82);
+		maf = new MAFrame(set);	
 	}
 	
 	// Map 2d Array to UI
@@ -71,42 +94,21 @@ public class MACanvas extends JPanel implements Observer {
 	}
 	
 	
-	//Create a 2d Array applying respective rule on it
-	public void create2DArray(MAFrame maf) {
-		
-		int i = 0;
-		ruleA = new  MARuleA();
-
-		ruleA.applyRule(maf, MAFrame.pos[i]);
-		i++;
-		draw2dArray(maf);
-		
-		//for(int i = 0; i<10; i++) {
-		//try {
-			//Thread.sleep(1000);
-	//	} catch (InterruptedException e) {
-	//		e.printStackTrace();
-	//	}
-		//shift(maf);
-		//}
-	}
-	
-	public void start() {
-		System.out.println("inside start");
-		  this.create2DArray(maf);
-	}
-	
-	private void shift(MAFrame maf) {
-		MACell[][] a = maf.getCellArray();
-		for(int i = 1; i<a.length; i++) {
-			for(int j = 0; j<a[i].length; j++) {
-				a[i-1][j] = a[i][j];
-			}
+	public void applyRule(MAFrame maf) {
+		MAFrame.pos[0]++;
+		if(currRule.equals(aa)) {
+			ruleA.applyRule(maf, MAFrame.pos[0]);
+		}else if(currRule.equals(bb)) {
+			ruleB.applyRule(maf, MAFrame.pos[0]);
+		}else if(currRule.equals(cc)) {
+			ruleC.applyRule(maf, MAFrame.pos[0]);
 		}
-		System.out.println(m);
-		//ruleA.generateCellFrame(maf, a.length-1, 0);
-		drawMA(this.g);
-		draw2dArray(maf);
+	}
+	
+	//called from UI action performed
+	 void start() {	
+		  applyRule(maf);
+		  repaint();
 	}
 	
 
@@ -114,30 +116,13 @@ public class MACanvas extends JPanel implements Observer {
 	 * The UI thread calls this method when the screen changes, or in response.
 	 * to a user initiated call to repaint();
 	 */
-	
-	public void changeStart(MAFrame maf) {
-		
-		for (int i = 0; i < maxRows; i++) {
-			for (int j = 0; j < maxCols; j++) {
-
-				MACell temp = maf.cellArray[i][j];
-				maf.cellArray[i][j] = maf.cellArray[i+1][j];
-				maf.cellArray[i+1][j] = temp;
-				
-			}
-		}		
-	
-		
-		
-	}
 	public void paint(Graphics g) {
-		if(firstTime == true) {
 		  this.g = (Graphics2D) g;
 		  drawMA( (Graphics2D) g);// Our Added-on drawing
-		  maf = new MAFrame(0, maxCols/2);
-		  firstTime = false;
-		}
-		draw2dArray(maf);
+		  ruleA = new  MARuleA();
+		  ruleB = new  MARuleB();
+		  ruleC = new  MARuleC();
+		  draw2dArray(maf);
     }
 	
 
@@ -157,11 +142,8 @@ public class MACanvas extends JPanel implements Observer {
 		this.maxCols = maxCols;
 		for (int j = 0; j < maxRows; j++) {
 		   for (int i = 0; i < maxCols; i++) {
-	
-			   
 			   int startx = i*stepSize;
 			   int starty = j*stepSize;
-			   
 			   // Draw a box, one pixel less than the step size to create a black outline
 			   paintRect(g2d, startx, starty, stepSize-1, stepSize-1, col); 
 			 

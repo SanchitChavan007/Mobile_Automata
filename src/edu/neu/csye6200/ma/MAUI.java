@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 
 public class MAUI extends MAApp {
 	
@@ -21,45 +22,44 @@ public class MAUI extends MAApp {
 	protected JButton stopBtn = null;
 	protected JComboBox<List> ruleComboBox = null;
 	protected JButton setTime = null;
-	protected JTextField timeInputField;
+	protected JTextField timeInputField = null;
     private static MACanvas maPanel = null;
     private static String selectedRule = "RuleA";
-    private double simulationTime = 1;
+    private String simulationTime = "1";
+    private Timer timer;
 
 	public MAUI() {
 		// TODO Auto-generated constructor stub
 		frame.setSize(500, 400);
 		frame.setTitle("MA Simulation App");	
     	showUI(); // Cause the Swing Dispatch thread to display the JFrame
+		timer = new Timer(100, this);
+		timer.setRepeats(true);
 	}
 	
    
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		log.info("We received an ActionEvent " + ae);
+		timer.start();
+		maPanel.start();
 		if (ae.getActionCommand() == "Start") {
 			System.out.println("Start pressed");
-			maPanel.start();
+		
 			
 		}
-		else if (ae.getActionCommand() == "Stop") {
+		else if (ae.getSource() == stopBtn)
 			System.out.println("Stop pressed");
-		   timeInputField.setEnabled(true);
-
-
-		}
+		
 		//Selecting Rule from ComboBox
 		else if((ae.getActionCommand() == "comboBoxChanged")) {
 		JComboBox cb = (JComboBox)ae.getSource();
 		selectedRule = (String)cb.getSelectedItem();
-		System.out.println(selectedRule);
+		maPanel.currRule = selectedRule;
 		}		
 		
-		else if(ae.getActionCommand() == "Set Time") {
-			simulationTime = Double.parseDouble(timeInputField.getText());
-			   timeInputField.setEnabled(false);
-
-			System.out.println(simulationTime);
+		else if(ae.getSource() == setTime) {
+			simulationTime = timeInputField.getText();
 		}
 	}
 	
@@ -77,14 +77,12 @@ public class MAUI extends MAApp {
 
 	@Override
 	public JPanel getMainPanel() {
-		// TODO Auto-generated method stub
 		maPanel = new MACanvas();
 		return maPanel;
 
 	}
 	public static void main(String[] args) {
-		MAUI maui = new MAUI();
-		log.info("MAApp started");
+		new MAUI();
 	}
 
 
@@ -92,7 +90,6 @@ public class MAUI extends MAApp {
 	protected JPanel getNorthPanel() {
 		
 				String[] rules = { "RuleA", "RuleB", "RuleC" };
-		
 		    	northPanel = new JPanel();
 		    	northPanel.setLayout(new FlowLayout());
 		    	
@@ -107,9 +104,8 @@ public class MAUI extends MAApp {
 		    	ruleComboBox.setSelectedIndex(0);
 		    	ruleComboBox.addActionListener(this);
 		    	setTime = new JButton("Set Time");
-		    	setTime.addActionListener(this);
 		    	timeInputField = new JTextField("Input Time");
-		    	timeInputField.addActionListener(this);
+		    	
 		    	northPanel.add(ruleComboBox);
 		    	northPanel.add(setTime);
 		    	northPanel.add(timeInputField);

@@ -1,10 +1,9 @@
 package edu.neu.csye6200.ma;
-
 import edu.neu.csye6200.ma.MACell.Color;
 
 public class MARuleA implements MARule {
 	int location = -1;
-	private final static String white = "WHITE";
+	private final static String white = "green";
 	private final static String green = "GREEN";
 	private final static String gray = "GRAY";
 	private final static String red = "RED";
@@ -25,16 +24,16 @@ public class MARuleA implements MARule {
 			if(a[i-1][j].getColor() == MACell.Color.BLUE) {
 					if(a[i-1][j-1].getColor()  == MACell.Color.GRAY && a[i-1][j+1].getColor()  == MACell.Color.GRAY) {
 					applyConditionA(i, j);
-					}else if(a[i-1][j-1].getColor()  == MACell.Color.GRAY && a[i-1][j+1].getColor()  == MACell.Color.WHITE) {
+					}else if(a[i-1][j-1].getColor()  == MACell.Color.GRAY && a[i-1][j+1].getColor()  == MACell.Color.GREEN) {
 						applyConditionA(i,j);
-					}else if(a[i-1][j+1].getColor()  == MACell.Color.GRAY && a[i-1][j-1].getColor()  == MACell.Color.WHITE) {
-						a[i][j].setColor(white);
+					}else if(a[i-1][j+1].getColor()  == MACell.Color.GRAY && a[i-1][j-1].getColor()  == MACell.Color.GREEN) {
+						a[i][j].setColor(green);
 						if(a[i][j-1].getColor() == MACell.Color.GRAY) {
 							a[i][j-1].setColor(blue);
 						}else {
 							a[i][j-1].setColor(red);
 						}
-					}else if(a[i-1][j+1].getColor()  == MACell.Color.WHITE && a[i-1][j-1].getColor()  == MACell.Color.WHITE) {
+					}else if(a[i-1][j+1].getColor()  == MACell.Color.GREEN && a[i-1][j-1].getColor()  == MACell.Color.GREEN) {
 						applyConditionA(i, j);
 					}
 					
@@ -42,8 +41,8 @@ public class MARuleA implements MARule {
 				if(a[i-1][j-1].getColor()  == MACell.Color.GRAY && a[i-1][j+1].getColor()  == MACell.Color.GRAY) {
 				applyConditionB(i, j);
 					
-				}else if(a[i-1][j-1].getColor()  == MACell.Color.GRAY && a[i-1][j+1].getColor()  == MACell.Color.WHITE) {
-					a[i][j].setColor(white);
+				}else if(a[i-1][j-1].getColor()  == MACell.Color.GRAY && a[i-1][j+1].getColor()  == MACell.Color.GREEN) {
+					a[i][j].setColor(green);
 					if(a[i][j-1].getColor() == MACell.Color.GRAY) {
 						a[i][j-1].setColor(blue);
 					}else {
@@ -51,7 +50,7 @@ public class MARuleA implements MARule {
 					}
 					
 					
-				}else if(a[i-1][j+1].getColor()  == MACell.Color.GRAY && a[i-1][j-1].getColor()  == MACell.Color.WHITE) {
+				}else if(a[i-1][j+1].getColor()  == MACell.Color.GRAY && a[i-1][j-1].getColor()  == MACell.Color.GREEN) {
 					a[i][j].setColor(gray);
 					if(a[i][j+1].getColor() == MACell.Color.GRAY) {
 						a[i][j+1].setColor(blue);
@@ -60,7 +59,7 @@ public class MARuleA implements MARule {
 					}
 					
 					
-				}else if(a[i-1][j+1].getColor()  == MACell.Color.WHITE && a[i-1][j-1].getColor()  == MACell.Color.WHITE) {
+				}else if(a[i-1][j+1].getColor()  == MACell.Color.GREEN && a[i-1][j-1].getColor()  == MACell.Color.GREEN) {
 					applyConditionB(i, j);
 
 				}
@@ -79,7 +78,7 @@ public class MARuleA implements MARule {
 	}
 	
 	private void applyConditionA(int i, int j) {
-		a[i][j].setColor(white);
+		a[i][j].setColor(green);
 		if(a[i][j+1].getColor() == MACell.Color.GRAY) {
 			a[i][j+1].setColor(blue);
 		}else {
