@@ -68,10 +68,10 @@ public class MARuleB implements MARule {
 					
 				}else if(a[i-1][j+1].getColor()  == MACell.Color.WHITE && a[i-1][j-1].getColor()  == MACell.Color.WHITE) {
 					a[i][j].setColor(gray);
-					if(a[i][j+1].getColor() == MACell.Color.GRAY) {
-						a[i][j+1].setColor(blue);
+					if(a[i][j-1].getColor() == MACell.Color.GRAY) {
+						a[i][j-1].setColor(blue);
 					}else {
-						a[i][j+1].setColor(red);
+						a[i][j-1].setColor(red);
 					}
 				}
 			}
