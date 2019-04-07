@@ -4,6 +4,14 @@ public class MACell {
 
 	private Color color;
 	
+	
+// Adding Colors to Cell Object as follows:
+//	1. RED - Active cell with Green Background
+//	2. GREEN - Any cell with Green Background
+//	3. GRAY - Any cell with Gray Background
+//	4. BLUE - Active cell with Gray Background
+
+	
 	enum Color 
     { 
         RED, GREEN, GRAY, WHITE, BLUE; 

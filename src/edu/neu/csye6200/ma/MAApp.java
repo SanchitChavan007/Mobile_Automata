@@ -29,7 +29,7 @@ public abstract class MAApp implements ActionListener, WindowListener {
 	 */
     public void initGUI() {
     	frame = new JFrame();
-		frame.setTitle("BGApp");
+		frame.setTitle("MAApp");
 
 		frame.setResizable(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //JFrame.DISPOSE_ON_CLOSE)

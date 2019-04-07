@@ -58,7 +58,7 @@ public class MACanvas extends JPanel implements Observer {
 		//set.add(42);
 	//	set.add(44);
 		//set.add(60);
-		//set.add(70);
+		set.add(70);
 
 		set.add(50);
 		set.add(80);

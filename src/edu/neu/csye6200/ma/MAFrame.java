@@ -18,6 +18,7 @@ public class MAFrame {
 		init(cellArray);
 	}
 
+	//Creating empty cell Array with all green cells
 	public void init(MACell[][] cellArray) {
 		for (int i = 0; i < cellArray.length; i++) {
 			for (int j = 0; j < cellArray.length; j++) {
