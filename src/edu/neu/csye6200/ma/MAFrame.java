@@ -17,6 +17,14 @@ public class MAFrame {
 		this.set = set;
 		init(cellArray);
 	}
+	
+	
+	public void addActiveCells(HashSet<Integer> set) {
+		
+		for(int i: set) {
+			cellArray[0][i].setColor(red);  
+		}
+	}
 
 	//Creating empty cell Array with all green cells
 	public void init(MACell[][] cellArray) {

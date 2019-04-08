@@ -27,9 +27,6 @@ public class MACanvas extends JPanel implements Observer {
     private long counter = 0L;
     private MAFrame maf;
     private Graphics2D g;
-    private int m = 1;
-    private int n = 10;
-    private int c = 0;
     private MARuleA ruleA = null;
     private MARuleB ruleB = null;
     private MARuleC ruleC = null;
@@ -41,6 +38,7 @@ public class MACanvas extends JPanel implements Observer {
     public static String currRule = aa;
     private static int simulationSteps;
     private static int stepCount = 0;
+    private MASimulation mas = new MASimulation();
     
 	Dimension size = getSize();
 	int maxRows = size.height / stepSize;
@@ -48,21 +46,9 @@ public class MACanvas extends JPanel implements Observer {
     /**
      * MACanvas constructor
      */
-	public MACanvas() {
+	public MACanvas(int activeCells) {
 		col = Color.gray;
 		set = new HashSet<>();
-		//add active cells here------------------>>>>>>>>
-		//set.add(30);
-//		set.add(10);
-		//set.add(40);
-		//set.add(42);
-	//	set.add(44);
-		//set.add(60);
-		set.add(70);
-
-		set.add(50);
-		set.add(80);
-		//set.add(82);
 		maf = new MAFrame(set);	
 	}
 	
@@ -95,28 +81,31 @@ public class MACanvas extends JPanel implements Observer {
 		return Color.BLACK;
 	}
 	
-	
-	public void applyRule(MAFrame maf) {
-		MAFrame.pos[0]++;
-		if(currRule.equals(aa)) {
-			ruleA.applyRule(maf, MAFrame.pos[0]);
-		}else if(currRule.equals(bb)) {
-			ruleB.applyRule(maf, MAFrame.pos[0]);
-		}else if(currRule.equals(cc)) {
-			ruleC.applyRule(maf, MAFrame.pos[0]);
-		}
-	}
-	
 	//called from UI action performed
 	 void start(int simulationSteps) {	
 		 if(stepCount < simulationSteps) {
-		  applyRule(maf);
+		  mas.applyRule(maf, currRule);
 		  repaint();
 		  stepCount++;
 		  System.out.println(stepCount);
 		 }
 		  
 	}
+	 
+	 public void addActiveCells(HashSet<Integer> set) {
+		 
+		 maf.addActiveCells(set);
+		 repaint();
+		 
+	 }
+	 
+	 public void resetFrame() {
+		 
+		 maf = new MAFrame(set);
+		 maf.pos[0] = 0;
+		 stepCount = 0;
+		 repaint();
+	 }
 	
 
 	/**
